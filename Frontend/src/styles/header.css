@@ -1,0 +1,96 @@
+/* Header Styles */
+header {
+    background-color: #212529;
+    color: white;
+    padding: 10px 20px;
+  }
+  
+  .logo-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .div1{
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .logo {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+  }
+  
+  .brand-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 50px;
+    margin: 0;
+    padding: 0;
+  }
+  
+  nav a {
+    color: white;
+    text-decoration: none;
+    font-size: large;
+  }
+  
+  nav a:hover {
+    text-decoration: underline;
+  }
+  
+  @media (max-width: 768px) {
+    nav ul {
+      flex-direction: column;
+      align-items: center;
+      background-color: #333;
+      padding: 15px;
+      display: none; /* Hide menu items by default on small screens */
+    }
+  
+    .menu-active {
+      display: flex; /* Show menu when activated */
+    }
+  
+    .menu-toggle {
+      display: flex;
+      cursor: pointer;
+    }
+  }
+  
+
+/* Toggle Button Styles */
+.toggle-button {
+  background-color: transparent; /* No background */
+  border: none; /* Remove border */
+  cursor: pointer; /* Change cursor to pointer */
+  display: flex; /* Use flexbox to center the icon */
+  align-items: center; /* Center items vertically */
+  justify-content: center; /* Center items horizontally */
+  font-size: 1.5rem; /* Adjust size of the icon */
+  color: inherit; /* Use the current text color */
+}
+
+.toggle-button:hover {
+  color: #ffd700; /* Change color on hover */
+}
+
+/* Icon Styles */
+.toggle-button svg {
+  width: 1em; /* Adjust size of the icons */
+  height: 1em; /* Maintain aspect ratio */
+}
+
+/* Dark Mode Icon Styles */
+.toggle-button.dark {
+  color: #ffd700; /* Change icon color in dark mode */
+}
+
+.toggle-button.dark:hover {
+  color: #fff; /* Change hover color in dark mode */
+}

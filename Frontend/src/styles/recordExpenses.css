@@ -1,0 +1,49 @@
+.expense-form-container {
+    width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  
+  .expense-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .input-field, .select-field, .transact-button {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .input-field {
+    width: 100%;
+  }
+  
+  .select-field {
+    width: 100%;
+    padding: 10px;
+  }
+  
+  .transact-button {
+    background-color: #28a745;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .transact-button:hover {
+    background-color: #218838;
+  }
+  
+  .label-text {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  
+  .transaction-status {
+    margin-top: 20px;
+    font-weight: bold;
+  }
+  
