@@ -13,6 +13,7 @@ const Home = (props) => {
         heading3="Login" 
         mode={props.mode} 
         toggleMode={props.toggleMode} 
+        isAuthenticated = {props.isAuthenticated}
       />
       <MainContent mode={props.mode} />
       {/* <Footer /> */}

@@ -63,7 +63,7 @@ const Login = (props) => {
 
   return (
     <>
-      <Navbar heading1="Home" heading2="Signup" heading3="Login" mode={props.mode} toggleMode={props.toggleMode} />
+      <Navbar heading1="Home" heading2="Signup" heading3="Login" mode={props.mode} toggleMode={props.toggleMode} isAuthenticated = {props.isAuthenticated} />
       <div className="page" style={{ backgroundColor: props.mode === 'dark' ? '#000000' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}>
         <div className="register" style={{ backgroundColor: props.mode === 'dark' ? '#161a1d' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}>
           <div className="registerform">

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Navbar_Merchent from './Navbar_Merchent';
+import Navbar from './Navbar';
 import MerchentOptions from './MerchentOptions';
 import '../styles/recordExpenses.css';
 
@@ -47,7 +47,7 @@ export default function RecordExpenses(props) {
 
   return (
     <div className='main' style={{ backgroundColor: props.mode === 'dark' ? '#000000' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}>
-      <Navbar_Merchent heading1="Home" heading2="Profile" heading3="Logout" mode={props.mode} toggleMode={props.toggleMode} />
+      <Navbar  heading1="Home" heading2="Profile" heading3="Logout" mode={props.mode} toggleMode={props.toggleMode} isAuthenticated={props.isAuthenticated} />
       <MerchentOptions mode={props.mode} />
       <div className="expense-form-container" style={{ backgroundColor: props.mode === 'dark' ? '#000000' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}>
         <form onSubmit={handleSubmit} className="expense-form">

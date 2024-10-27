@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../styles/manageInventory.css';
 import MerchentOptions from './MerchentOptions';
 import DeleteInventory from './DeleteInventory';
-import Navbar_Merchent from './Navbar_Merchent';
+import Navbar from './Navbar';
 
 export default function ManageInventory(props) {
   const [itemName, setItemName] = useState('');
@@ -41,8 +41,8 @@ export default function ManageInventory(props) {
 
   return (
     <div className='main' style={{ backgroundColor: props.mode=='dark' ? '#000' : '#fff', color: props.mode=='dark'? '#e0e0e0' : '#000' }}>
-        <Navbar_Merchent heading1="Home" heading2="Profile" heading3="Logout" mode={props.mode} 
-        toggleMode={props.toggleMode} />
+        <Navbar heading1="Home" heading2="Profile" heading3="Logout" mode={props.mode} 
+        toggleMode={props.toggleMode} isAuthenticated={props.isAuthenticated} />
         <MerchentOptions mode={props.mode}/>
         <div className="manage-inventory-container" style={{ backgroundColor: props.mode=='dark' ? '#000' : '#fff', color: props.mode=='dark'? '#e0e0e0' : '#000' }}>
         <form onSubmit={handleSubmit} className="manage-inventory-form">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Navbar_Merchent from './Navbar_Merchent';
+import Navbar from './Navbar';
 import '../styles/profile.css';
 
 const Profile = (props) => {
@@ -82,7 +82,7 @@ const Profile = (props) => {
   
   return (
     <div className='main' style={{ backgroundColor: props.mode=='dark' ? '#000' : '#fff', color: props.mode=='dark'? '#e0e0e0' : '#000' }}>
-      <Navbar_Merchent heading1="Home" heading2="Profile" heading3="Logout" mode={props.mode} toggleMode={props.toggleMode} />
+      <Navbar heading1="Home" heading2="Profile" heading3="Logout" mode={props.mode} toggleMode={props.toggleMode} isAuthenticated={props.isAuthenticated} />
       <form onSubmit={handleSubmit} className='formprofile' style={{ backgroundColor: props.mode=='dark' ? '#000' : '#fff', color: props.mode=='dark'? '#e0e0e0' : '#000' }}>
         <label htmlFor="type">Filter By Type of Transaction: </label>
         <select

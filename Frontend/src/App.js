@@ -15,7 +15,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
-    localStorage.getItem('isAuthenticated') === 'true'
+    localStorage.getItem('isAuthenticated') === true
   );
 
   // Mode state with localStorage
@@ -50,11 +50,12 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home mode={mode} toggleMode={toggleMode} />} />
+        <Route path="/" element={<Home mode={mode} toggleMode={toggleMode} isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated}/>} />
         <Route
           path="/login"
           element={
             <Login
+              isAuthenticated={isAuthenticated}
               setIsAuthenticated={setIsAuthenticated}
               mode={mode}
               toggleMode={toggleMode}
@@ -64,31 +65,31 @@ function App() {
         />
         <Route
           path="/signup"
-          element={<Signup setIsAuthenticated={setIsAuthenticated} mode={mode} toggleMode={toggleMode} setId={setId} />}
+          element={<Signup setIsAuthenticated={setIsAuthenticated} mode={mode} toggleMode={toggleMode} setId={setId} isAuthenticated={isAuthenticated} />}
         />
         <Route
           path="/merchent"
-          element={<ProtectedRoute element={<MerchentHome mode={mode} toggleMode={toggleMode} id={userid} />} isAuthenticated={isAuthenticated} />}
+          element={<ProtectedRoute element={<MerchentHome mode={mode} toggleMode={toggleMode} id={userid}  isAuthenticated={isAuthenticated}/>} isAuthenticated={isAuthenticated} />}
         />
         <Route
           path="/merchent/transactions"
-          element={<ProtectedRoute element={<RecordTransactions mode={mode} toggleMode={toggleMode} id={userid}/>} isAuthenticated={isAuthenticated} />}
+          element={<ProtectedRoute element={<RecordTransactions mode={mode} toggleMode={toggleMode} id={userid} isAuthenticated={isAuthenticated}/>} isAuthenticated={isAuthenticated} />}
         />
         <Route
           path="/merchent/expenses"
-          element={<ProtectedRoute element={<RecordExpenses mode={mode} toggleMode={toggleMode} id={userid}/>} isAuthenticated={isAuthenticated} />}
+          element={<ProtectedRoute element={<RecordExpenses mode={mode} toggleMode={toggleMode} id={userid} isAuthenticated={isAuthenticated}/>} isAuthenticated={isAuthenticated} />}
         />
         <Route
           path="/merchent/inventory"
-          element={<ProtectedRoute element={<ManageInventory mode={mode} toggleMode={toggleMode} id={userid}/>} isAuthenticated={isAuthenticated} />}
+          element={<ProtectedRoute element={<ManageInventory mode={mode} toggleMode={toggleMode} id={userid} isAuthenticated={isAuthenticated}/>} isAuthenticated={isAuthenticated} />}
         />
         <Route
           path="/merchent/profile"
-          element={<ProtectedRoute element={<Profile mode={mode} toggleMode={toggleMode} id={userid} />} isAuthenticated={isAuthenticated} />}
+          element={<ProtectedRoute element={<Profile mode={mode} toggleMode={toggleMode} id={userid}  isAuthenticated={isAuthenticated}/>} isAuthenticated={isAuthenticated} />}
         />
         <Route
           path="/merchent/logout"
-          element={<Logout setIsAuthenticated={setIsAuthenticated} mode={mode} toggleMode={toggleMode} setId={setId} />} // Pass setId to Logout if needed
+          element={<Logout  isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} mode={mode} toggleMode={toggleMode} setId={setId} />} // Pass setId to Logout if needed
         />
       </Routes>
     </Router>
