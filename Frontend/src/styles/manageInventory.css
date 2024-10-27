@@ -79,6 +79,7 @@
 @media (max-width: 500px) {
     .manage-inventory-container {
         padding: 20px; /* Less padding on smaller screens */
+        margin: 10px;
     }
 
     .form-button {

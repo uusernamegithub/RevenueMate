@@ -1,7 +1,7 @@
 
   .delete-inventory-container {
-    max-width: 800px;
-    margin: 0 auto;
+    /* max-width: 800px; */
+    margin: 0px;
   }
   
   .delete-inventory-title {
@@ -62,4 +62,9 @@
     background-color: #ccc;
     cursor: not-allowed;
   }
-  
+  @media (max-width: 600px) {
+    .delete-inventory-container {
+      width: 90%;
+      margin: 10px;
+    }
+  }
