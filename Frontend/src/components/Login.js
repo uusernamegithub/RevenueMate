@@ -1,15 +1,19 @@
 // src/components/Login.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
+import {AppContext} from './AppContext'
 import AlertComp from './AlertComp';
 import '../styles/login.css';
+
 
 const Login = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showAlert, setShowAlert] = useState(false); // State to manage alert visibility
   const navigate = useNavigate();
+  const { mode, toggleMode, isAuthenticated,setIsAuthenticated,setId} = useContext(AppContext);
+
 
   useEffect(() => {
     let timer;
@@ -48,8 +52,9 @@ const Login = (props) => {
   
         const data = await response.json(); // Parse the response data
         console.log('Login successful:', data);
-        props.setIsAuthenticated(true); // Set authenticated state
-        props.setId(data.id); // Set user ID in App component
+        setIsAuthenticated(true); // Set authenticated state
+        localStorage.setItem('isAuthenticated', 'true'); // Store as string
+        setId(data.id); // Set user ID in App component 
         localStorage.setItem('userid', data.id); // Store user ID in local storage
         setShowAlert(true); // Show alert on successful login
       } catch (error) {
@@ -63,9 +68,9 @@ const Login = (props) => {
 
   return (
     <>
-      <Navbar heading1="Home" heading2="Signup" heading3="Login" mode={props.mode} toggleMode={props.toggleMode} isAuthenticated = {props.isAuthenticated} />
-      <div className="page" style={{ backgroundColor: props.mode === 'dark' ? '#000000' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}>
-        <div className="register" style={{ backgroundColor: props.mode === 'dark' ? '#161a1d' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}>
+      <Navbar />
+      <div className="page" style={{ backgroundColor: mode === 'dark' ? '#000000' : '#fff', color: mode === 'dark' ? '#e0e0e0' : '#000' }}>
+        <div className="register" style={{ backgroundColor: mode === 'dark' ? '#161a1d' : '#fff', color: mode === 'dark' ? '#e0e0e0' : '#000' }}>
           <div className="registerform">
             <h1>Login</h1>
             <form onSubmit={handleLogin} className='formlogin'>
@@ -76,7 +81,7 @@ const Login = (props) => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                style={{ backgroundColor: props.mode === 'dark' ? '#000000' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}
+                style={{ backgroundColor: mode === 'dark' ? '#000000' : '#fff', color: mode === 'dark' ? '#e0e0e0' : '#000' }}
               />
               <input
                 type="password"
@@ -85,7 +90,7 @@ const Login = (props) => {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                style={{ backgroundColor: props.mode === 'dark' ? '#000000' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}
+                style={{ backgroundColor: mode === 'dark' ? '#000000' : '#fff', color: mode === 'dark' ? '#e0e0e0' : '#000' }}
               />
               <button type="submit" id="submit">Login</button>
             </form>

@@ -1,7 +1,8 @@
 // src/App.js
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
+import { AppProvider } from './components/AppContext'; // Import the AppProvider
 import Home from './components/Home';
 import Login from './components/Login';
 import Signup from './components/Signup';
@@ -14,85 +15,39 @@ import Logout from './components/Logout';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    localStorage.getItem('isAuthenticated') === true
-  );
-
-  // Mode state with localStorage
-  const [mode, setMode] = useState(() => {
-    return localStorage.getItem('mode') || 'light'; // Default to light mode
-  });
-
-  // Initialize userid from localStorage
-  const [userid, setId] = useState(() => {
-    return localStorage.getItem('userid') || 0; // Default to 0 if not set
-  });
-
-  // Function to toggle between light and dark modes
-  const toggleMode = () => {
-    setMode((prevMode) => {
-      const newMode = prevMode === 'light' ? 'dark' : 'light';
-      localStorage.setItem('mode', newMode); // Save new mode in localStorage
-      return newMode;
-    });
-  };
-
-  // Update localStorage when isAuthenticated changes
-  useEffect(() => {
-    localStorage.setItem('isAuthenticated', isAuthenticated);
-  }, [isAuthenticated]);
-
-  // Update localStorage when userid changes
-  useEffect(() => {
-    localStorage.setItem('userid', userid);
-  }, [userid]);
-
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home mode={mode} toggleMode={toggleMode} isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated}/>} />
-        <Route
-          path="/login"
-          element={
-            <Login
-              isAuthenticated={isAuthenticated}
-              setIsAuthenticated={setIsAuthenticated}
-              mode={mode}
-              toggleMode={toggleMode}
-              setId={setId} // Pass setId to Login
-            />
-          }
-        />
-        <Route
-          path="/signup"
-          element={<Signup setIsAuthenticated={setIsAuthenticated} mode={mode} toggleMode={toggleMode} setId={setId} isAuthenticated={isAuthenticated} />}
-        />
-        <Route
-          path="/merchent"
-          element={<ProtectedRoute element={<MerchentHome mode={mode} toggleMode={toggleMode} id={userid}  isAuthenticated={isAuthenticated}/>} isAuthenticated={isAuthenticated} />}
-        />
-        <Route
-          path="/merchent/transactions"
-          element={<ProtectedRoute element={<RecordTransactions mode={mode} toggleMode={toggleMode} id={userid} isAuthenticated={isAuthenticated}/>} isAuthenticated={isAuthenticated} />}
-        />
-        <Route
-          path="/merchent/expenses"
-          element={<ProtectedRoute element={<RecordExpenses mode={mode} toggleMode={toggleMode} id={userid} isAuthenticated={isAuthenticated}/>} isAuthenticated={isAuthenticated} />}
-        />
-        <Route
-          path="/merchent/inventory"
-          element={<ProtectedRoute element={<ManageInventory mode={mode} toggleMode={toggleMode} id={userid} isAuthenticated={isAuthenticated}/>} isAuthenticated={isAuthenticated} />}
-        />
-        <Route
-          path="/merchent/profile"
-          element={<ProtectedRoute element={<Profile mode={mode} toggleMode={toggleMode} id={userid}  isAuthenticated={isAuthenticated}/>} isAuthenticated={isAuthenticated} />}
-        />
-        <Route
-          path="/merchent/logout"
-          element={<Logout  isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} mode={mode} toggleMode={toggleMode} setId={setId} />} // Pass setId to Logout if needed
-        />
-      </Routes>
-    </Router>
+    <AppProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route
+            path="/merchent"
+            element={<ProtectedRoute element={<MerchentHome />} />}
+          />
+          <Route
+            path="/merchent/transactions"
+            element={
+              <ProtectedRoute element={<RecordTransactions />} />
+            }
+          />
+          <Route
+            path="/merchent/expenses"
+            element={<ProtectedRoute element={<RecordExpenses />} />}
+          />
+          <Route
+            path="/merchent/inventory"
+            element={<ProtectedRoute element={<ManageInventory />} />}
+          />
+          <Route
+            path="/merchent/profile"
+            element={<ProtectedRoute element={<Profile />} />}
+          />
+          <Route path="/merchent/logout" element={<Logout />} />
+        </Routes>
+      </Router>
+    </AppProvider>
   );
 }
 

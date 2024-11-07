@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AppContext } from './AppContext';
 import homepageImage from '../images/homepageimage.png'; // Adjust the image path if needed
 import '../styles/main_content.css'
 
-const MainContent = (props) => {
+const MainContent = () => {
+  const {mode} = useContext(AppContext);
   return (
-    <main style={{ backgroundColor: props.mode=='dark' ? '#000000' : '#fff', color: props.mode=='dark'? '#e0e0e0' : '#000' }}>
-      <div className="card" style={{ backgroundColor: props.mode=='dark' ? '#161a1d' : '#fff', color: props.mode=='dark'? '#e0e0e0' : '#000' }}>
+    <main style={{ backgroundColor: mode=='dark' ? '#000000' : '#fff', color: mode=='dark'? '#e0e0e0' : '#000' }}>
+      <div className="card" style={{ backgroundColor: mode=='dark' ? '#161a1d' : '#fff', color: mode=='dark'? '#e0e0e0' : '#000' }}>
         <div className="homepagetext">
           <h1>Worried about your business finances?</h1>
           <h1>Welcome to Revenue Mate, your one-stop solution!</h1>

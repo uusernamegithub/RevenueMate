@@ -1,22 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Navbar from './Navbar';
 import MainContent from './MainContent';
+import { AppContext } from './AppContext'; // Make sure to use curly braces for named import
 
 // import Footer from './components/Footer'; // Uncomment if you wish to add the footer
 
-const Home = (props) => {
+const Home = () => {
+  const { mode, toggleMode, isAuthenticated } = useContext(AppContext);
+
   return (
-    <div className={props.mode}> {/* Apply the mode class to the outer container */}
-      <Navbar 
-        heading1="Home" 
-        heading2="Signup" 
-        heading3="Login" 
-        mode={props.mode} 
-        toggleMode={props.toggleMode} 
-        isAuthenticated = {props.isAuthenticated}
-      />
-      <MainContent mode={props.mode} />
-      {/* <Footer /> */}
+    <div className={mode}> 
+      <Navbar/>
+      <MainContent />
     </div>
   );
 };

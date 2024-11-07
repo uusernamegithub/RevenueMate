@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext} from 'react';
 import Navbar from './Navbar';
 import MerchentOptions from './MerchentOptions';
 import AlertComp from './AlertComp';
+import { AppContext } from './AppContext';
 import '../styles/recordTransactions.css';
 
 export default function RecordTransactions(props) {
@@ -12,8 +13,8 @@ export default function RecordTransactions(props) {
   const [name, setName] = useState('');
   const [paymentMode, setPaymentMode] = useState('CASH');
   const [totalAmount, setTotalAmount] = useState(0);
-  const [status, setStatus] = useState('false');
-
+  const [status, setStatus] = useState(false);
+  const { mode, toggleMode, userid, isAuthenticated } = useContext(AppContext);
 
   // Function to fetch items from the endpoint with the ID
   const fetchItems = async () => {
@@ -23,7 +24,7 @@ export default function RecordTransactions(props) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id: props.id }), // Send ID in the request body
+        body: JSON.stringify({ id: userid }), // Send ID in the request body
       });
 
       if (!response.ok) {
@@ -79,7 +80,7 @@ export default function RecordTransactions(props) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          id: props.id,
+          id: userid,
           customername: name,
           amount: totalAmount,
           items: concat_items(),
@@ -90,7 +91,7 @@ export default function RecordTransactions(props) {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      setStatus('Transaction submitted successfully!');
+      setStatus(true);
       handleTransactClear(); // Clear the transaction form after submission
     } catch (error) {
       console.error('Error submitting transaction:', error);
@@ -104,17 +105,16 @@ export default function RecordTransactions(props) {
   const handleTransactClear = () => {
     setName('');
     setPaymentMode('CASH');
-    setStatus('');
     setTotalAmount(0);
     setItemsBought([]);
   };
 
   return (
-    <div className='main' style={{ backgroundColor: props.mode === 'dark' ? '#000000' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}>
-      <Navbar heading1="Home" heading2="Profile" heading3="Logout" mode={props.mode} toggleMode={props.toggleMode} isAuthenticated={props.isAuthenticated} />
-      <MerchentOptions mode={props.mode} />
-      <div className="record-transactions-container" style={{ backgroundColor: props.mode === 'dark' ? '#000000' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}>
-        <div className="form-container" style={{ backgroundColor: props.mode === 'dark' ? '#000000' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}>
+    <div className='main' style={{ backgroundColor: mode === 'dark' ? '#000000' : '#fff', color: mode === 'dark' ? '#e0e0e0' : '#000' }}>
+      <Navbar />
+      <MerchentOptions  />
+      <div className="record-transactions-container" style={{ backgroundColor: mode === 'dark' ? '#000000' : '#fff', color: mode === 'dark' ? '#e0e0e0' : '#000' }}>
+        <div className="form-container" style={{ backgroundColor: mode === 'dark' ? '#000000' : '#fff', color: mode === 'dark' ? '#e0e0e0' : '#000' }}>
           <label htmlFor="items" className="label-items">
             <p className="label-text">Select Item to add:</p>
           </label>
@@ -124,9 +124,9 @@ export default function RecordTransactions(props) {
             value={selectedItem}
             onChange={(e) => setSelectedItem(e.target.value)}
             className="select-items"
-            style={{ backgroundColor: props.mode === 'dark' ? '#333' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}
+            style={{ backgroundColor: mode === 'dark' ? '#333' : '#fff', color: mode === 'dark' ? '#e0e0e0' : '#000' }}
           >
-            <option value="NONE" style={{ backgroundColor: props.mode === 'dark' ? '#333' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}>NONE</option>
+            <option value="NONE" style={{ backgroundColor: mode === 'dark' ? '#333' : '#fff', color: mode === 'dark' ? '#e0e0e0' : '#000' }}>NONE</option>
             {items.map((item, index) => (
               <option key={index} value={item.itemname} className="select-option">
                 {item.itemname}
@@ -146,7 +146,7 @@ export default function RecordTransactions(props) {
             placeholder="Quantity"
             min="1"
             className="input-quantity"
-            style={{ backgroundColor: props.mode === 'dark' ? '#333' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}
+            style={{ backgroundColor: mode === 'dark' ? '#333' : '#fff', color: mode === 'dark' ? '#e0e0e0' : '#000' }}
           />
 
           <button type="button" className="button-submit" onClick={handleAddItem}>
@@ -178,8 +178,8 @@ export default function RecordTransactions(props) {
           </table>
         </div>
 
-        <div className="transactioncontainer" style={{ backgroundColor: props.mode === 'dark' ? '#000000' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}>
-          <form onSubmit={handleSubmit} className="transaction-form" style={{ backgroundColor: props.mode === 'dark' ? '#000000' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}>
+        <div className="transactioncontainer" style={{ backgroundColor: mode === 'dark' ? '#000000' : '#fff', color: mode === 'dark' ? '#e0e0e0' : '#000' }}>
+          <form onSubmit={handleSubmit} className="transaction-form" style={{ backgroundColor: mode === 'dark' ? '#000000' : '#fff', color: mode === 'dark' ? '#e0e0e0' : '#000' }}>
             <input
               name="name"
               type="text"
@@ -189,7 +189,7 @@ export default function RecordTransactions(props) {
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="input-field"
-              style={{ backgroundColor: props.mode === 'dark' ? '#333' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}
+              style={{ backgroundColor: mode === 'dark' ? '#333' : '#fff', color: mode === 'dark' ? '#e0e0e0' : '#000' }}
             />
             <label htmlFor="nature" className="label-payment-mode">
               <p className="label-text">Payment Mode:</p>
@@ -199,7 +199,7 @@ export default function RecordTransactions(props) {
               value={paymentMode}
               onChange={(e) => setPaymentMode(e.target.value)}
               className="select-payment-mode"
-              style={{ backgroundColor: props.mode === 'dark' ? '#333' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}
+              style={{ backgroundColor: mode === 'dark' ? '#333' : '#fff', color: mode === 'dark' ? '#e0e0e0' : '#000' }}
             >
               <option value="CASH">CASH</option>
               <option value="CARD">CARD</option>
@@ -212,7 +212,7 @@ export default function RecordTransactions(props) {
               Record Transaction
             </button>
           </form>
-          {/* {status && <AlertComp message="Transaction successful !"/>} */}
+          {status && <AlertComp message="Transaction successful !"/>}
         </div>
       </div>
     </div>

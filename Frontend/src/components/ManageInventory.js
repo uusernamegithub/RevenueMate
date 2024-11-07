@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import '../styles/manageInventory.css';
 import MerchentOptions from './MerchentOptions';
 import DeleteInventory from './DeleteInventory';
+import { AppContext } from './AppContext';
 import Navbar from './Navbar';
 
 export default function ManageInventory(props) {
   const [itemName, setItemName] = useState('');
   const [price, setPrice] = useState('');
+  const {mode,isAuthenticated,userid,toggleMode} = useContext(AppContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,7 +20,7 @@ export default function ManageInventory(props) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          id:props.id,
+          id:userid,
           itemname:itemName,
           price:price
         }
@@ -40,11 +42,10 @@ export default function ManageInventory(props) {
   };
 
   return (
-    <div className='main' style={{ backgroundColor: props.mode=='dark' ? '#000' : '#fff', color: props.mode=='dark'? '#e0e0e0' : '#000' }}>
-        <Navbar heading1="Home" heading2="Profile" heading3="Logout" mode={props.mode} 
-        toggleMode={props.toggleMode} isAuthenticated={props.isAuthenticated} />
-        <MerchentOptions mode={props.mode}/>
-        <div className="manage-inventory-container" style={{ backgroundColor: props.mode=='dark' ? '#000' : '#fff', color: props.mode=='dark'? '#e0e0e0' : '#000' }}>
+    <div className='main' style={{ backgroundColor: mode==='dark' ? '#000' : '#fff', color: mode==='dark'? '#e0e0e0' : '#000' }}>
+        <Navbar />
+        <MerchentOptions />
+        <div className="manage-inventory-container" style={{ backgroundColor: mode==='dark' ? '#000' : '#fff', color: mode==='dark'? '#e0e0e0' : '#000' }}>
         <form onSubmit={handleSubmit} className="manage-inventory-form">
             <div className="form-group">
             <label htmlFor="itemName" className="form-label">Item Name:</label>
@@ -55,7 +56,7 @@ export default function ManageInventory(props) {
                 onChange={(e) => setItemName(e.target.value)}
                 required
                 className="form-input"
-                style={{ backgroundColor: props.mode=='dark' ? '#333' : '#fff', color: props.mode=='dark'? '#e0e0e0' : '#000' }}
+                style={{ backgroundColor: mode==='dark' ? '#333' : '#fff', color: mode==='dark'? '#e0e0e0' : '#000' }}
             />
             </div>
             <div className="form-group">
@@ -67,15 +68,15 @@ export default function ManageInventory(props) {
                 onChange={(e) => setPrice(e.target.value)}
                 required
                 className="form-input"
-                style={{ backgroundColor: props.mode=='dark' ? '#333' : '#fff', color: props.mode=='dark'? '#e0e0e0' : '#000' }}
+                style={{ backgroundColor: mode==='dark' ? '#333' : '#fff', color: mode==='dark'? '#e0e0e0' : '#000' }}
             />
             </div>
             <button type="submit" className="form-button">Add to Inventory</button>
         </form>
         </div>
 
-       <div className='delInv' style={{ backgroundColor: props.mode=='dark' ? '#000' : '#fff', color: props.mode=='dark'? '#e0e0e0' : '#000' }}>
-            <DeleteInventory mode={props.mode} id={props.id}/>
+       <div className='delInv' style={{ backgroundColor: mode==='dark' ? '#000' : '#fff', color: mode==='dark'? '#e0e0e0' : '#000' }}>
+            <DeleteInventory/>
        </div>
         
     </div>

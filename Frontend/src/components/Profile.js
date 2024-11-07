@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext} from 'react';
 import Navbar from './Navbar';
+import { AppContext } from './AppContext';
 import '../styles/profile.css';
 
-const Profile = (props) => {
+const Profile = () => {
   // console.log('props:', props);
   const [creditScore, setCreditScore] = useState(0);
   const [debitScore, setDebitScore] = useState(0);
   const [items, setItems] = useState([]); // State to hold items after fetching
   const [filterType, setFilterType] = useState('NONE');
   const [filterMode, setFilterMode] = useState('NONE');
+  
+  const {mode,isAuthenticated,userid,toggleMode} = useContext(AppContext);
+
 
   // Sample initial items (optional; you can initialize from API response)
   useEffect(() => {
@@ -52,7 +56,7 @@ const Profile = (props) => {
   // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent default form submission
-    console.log(props.id)
+    console.log(userid)
     // Make POST request
     try {
       const response = await fetch('http://localhost:5000/revenueMate/v1/profile/filterTransactions', {
@@ -61,7 +65,7 @@ const Profile = (props) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          id:props.id,
+          id:userid,
           type: filterType,
           nature: filterMode,
         }),
@@ -81,15 +85,15 @@ const Profile = (props) => {
   };
   
   return (
-    <div className='main' style={{ backgroundColor: props.mode=='dark' ? '#000' : '#fff', color: props.mode=='dark'? '#e0e0e0' : '#000' }}>
-      <Navbar heading1="Home" heading2="Profile" heading3="Logout" mode={props.mode} toggleMode={props.toggleMode} isAuthenticated={props.isAuthenticated} />
-      <form onSubmit={handleSubmit} className='formprofile' style={{ backgroundColor: props.mode=='dark' ? '#000' : '#fff', color: props.mode=='dark'? '#e0e0e0' : '#000' }}>
+    <div className='main' style={{ backgroundColor: mode=='dark' ? '#000' : '#fff', color: mode=='dark'? '#e0e0e0' : '#000' }}>
+      <Navbar heading1="Home" heading2="Profile" heading3="Logout" mode={mode} toggleMode={toggleMode} isAuthenticated={isAuthenticated} />
+      <form onSubmit={handleSubmit} className='formprofile' style={{ backgroundColor: mode=='dark' ? '#000' : '#fff', color: mode=='dark'? '#e0e0e0' : '#000' }}>
         <label htmlFor="type">Filter By Type of Transaction: </label>
         <select
           name="type"
           id="type"
           onChange={(e) => setFilterType(e.target.value)}
-          style={{ backgroundColor: props.mode=='dark' ? '#333' : '#fff', color: props.mode=='dark'? '#e0e0e0' : '#000' }}
+          style={{ backgroundColor: mode=='dark' ? '#333' : '#fff', color: mode=='dark'? '#e0e0e0' : '#000' }}
         >
           <option value="NONE">None</option>
           <option value="credit">Credit</option>
@@ -100,7 +104,7 @@ const Profile = (props) => {
           name="nature"
           id="nature"
           onChange={(e) => setFilterMode(e.target.value)}
-          style={{ backgroundColor: props.mode=='dark' ? '#333' : '#fff', color: props.mode=='dark'? '#e0e0e0' : '#000' }}
+          style={{ backgroundColor: mode=='dark' ? '#333' : '#fff', color: mode=='dark'? '#e0e0e0' : '#000' }}
         >
           <option value="NONE">None</option>
           <option value="CASH">Cash</option>
@@ -116,7 +120,7 @@ const Profile = (props) => {
         <p>Total Net: {creditScore - debitScore}</p>
       </div>
       <div className="displayArea">
-        <table className="table"  id={`table-container ${props.mode === 'dark' ? 'dark-mode' : ''}`} >
+        <table className="table"  id={`table-container ${mode === 'dark' ? 'dark-mode' : ''}`} >
           <thead>
             <tr>
               <th>Date of Transaction</th>
@@ -129,7 +133,7 @@ const Profile = (props) => {
             {items.map((ele, index) => (
               <tr key={index}
               style={{
-                backgroundColor: index % 2 === 0 ? (props.mode === 'dark' ? '#333' : '#ebe7e7') : 'transparent',
+                backgroundColor: index % 2 === 0 ? (mode === 'dark' ? '#333' : '#ebe7e7') : 'transparent',
               }}>
                 <td>{ele.date}</td>
                 <td>{ele.type}</td>

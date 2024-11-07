@@ -1,6 +1,7 @@
-import React, { useState ,useEffect} from 'react';
+import React, { useState ,useEffect,useContext} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
+import {AppContext} from './AppContext'
 import AlertComp from './AlertComp';
 import '../styles/signup.css'; // Make sure to create this CSS file for styling
 
@@ -10,6 +11,7 @@ const Signup = (props) => {
   const [password, setPassword] = useState('');
   const [showAlert, setShowAlert] = useState(false); // State to manage alert visibility
   const navigate = useNavigate();
+  const { mode,setIsAuthenticated,setId } = useContext(AppContext);
 
   useEffect(() => {
     let timer;
@@ -49,8 +51,8 @@ const Signup = (props) => {
   
         const data = await response.json(); // Parse the response data
         console.log('Login successful:', data);
-        props.setIsAuthenticated(true); // Set authenticated state
-        props.setId(data.id); // Set user ID in App component
+        setIsAuthenticated(true); // Set authenticated state
+        setId(data.id); // Set user ID in App component
         localStorage.setItem('userid', data.id); // Store user ID in local storage
         setShowAlert(true); // Show alert on successful login
       } catch (error) {
@@ -64,10 +66,9 @@ const Signup = (props) => {
 
   return (
     <>
-      <Navbar heading1="Home" heading2="Signup" heading3="Login"  mode={props.mode} 
-        toggleMode={props.toggleMode} isAuthenticated = {props.isAuthenticated} />
-      <div className="page" style={{ backgroundColor: props.mode=='dark' ? '#000000' : '#fff', color: props.mode=='dark'? '#e0e0e0' : '#000' }}>
-      <div className="register" style={{ backgroundColor: props.mode=='dark' ? '#161a1d' : '#fff', color: props.mode=='dark'? '#e0e0e0' : '#000' }}>
+      <Navbar />
+      <div className="page" style={{ backgroundColor: mode==='dark' ? '#000000' : '#fff', color: mode==='dark'? '#e0e0e0' : '#000' }}>
+      <div className="register" style={{ backgroundColor: mode==='dark' ? '#161a1d' : '#fff', color: mode==='dark'? '#e0e0e0' : '#000' }}>
         <div className="registerform">
           <h1>Sign Up</h1>
           <form onSubmit={handleSignup} className='formsignup'>
@@ -78,7 +79,7 @@ const Signup = (props) => {
               required 
               value={username} 
               onChange={(e) => setUsername(e.target.value)}
-              style={{ backgroundColor: props.mode=='dark' ? '#000000' : '#fff', color: props.mode=='dark'? '#e0e0e0' : '#000' }} // Capture username input
+              style={{ backgroundColor: mode==='dark' ? '#000000' : '#fff', color: mode==='dark'? '#e0e0e0' : '#000' }} // Capture username input
             />
             <input 
               type="email" 
@@ -87,7 +88,7 @@ const Signup = (props) => {
               required 
               value={email} 
               onChange={(e) => setEmail(e.target.value)}
-              style={{ backgroundColor: props.mode=='dark' ? '#000000' : '#fff', color: props.mode=='dark'? '#e0e0e0' : '#000' }} // Capture email input
+              style={{ backgroundColor: mode==='dark' ? '#000000' : '#fff', color: mode==='dark'? '#e0e0e0' : '#000' }} // Capture email input
             />
             <input 
               type="password" 
@@ -96,7 +97,7 @@ const Signup = (props) => {
               required 
               value={password} 
               onChange={(e) => setPassword(e.target.value)}
-              style={{ backgroundColor: props.mode=='dark' ? '#000000' : '#fff', color: props.mode=='dark'? '#e0e0e0' : '#000' }} // Capture password input
+              style={{ backgroundColor: mode==='dark' ? '#000000' : '#fff', color: mode==='dark'? '#e0e0e0' : '#000' }} // Capture password input
             />
             <button type="submit" id="submit">Sign Up</button>
           </form>

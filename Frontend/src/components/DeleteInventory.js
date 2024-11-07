@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { AppContext } from './AppContext';
 import '../styles/deleteInventory.css';
 
-const DeleteInventory = (props) => {
-  console.log("Fetching items for ID:", props.id);
+const DeleteInventory = () => {
+  const {userid,mode} = useContext(AppContext);
+  console.log("id",userid);
 
   const [items, setItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -17,7 +19,7 @@ const DeleteInventory = (props) => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            id: props.id
+            id: userid
           }),
           credentials: 'include',
         });
@@ -34,7 +36,7 @@ const DeleteInventory = (props) => {
       }
     };
     fetchItems();
-  }, [props.id]); // Add props.id as a dependency to re-fetch items if the ID changes
+  }, [userid]); // Add userid as a dependency to re-fetch items if the ID changes
 
   // Handle checkbox selection
   const handleCheckboxChange = (itemName) => {
@@ -68,7 +70,7 @@ const DeleteInventory = (props) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          id:props.id,
+          id:userid,
           itemname:selectedItems[0]
          }), // Sending the selected item names
       });
@@ -85,10 +87,10 @@ const DeleteInventory = (props) => {
   };
 
   return (
-    <div className="delete-inventory-container" style={{ backgroundColor: props.mode === 'dark' ? '#000' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}>
+    <div className="delete-inventory-container" style={{ backgroundColor: mode === 'dark' ? '#000' : '#fff', color: mode === 'dark' ? '#e0e0e0' : '#000' }}>
       <h2 className="delete-inventory-title">Item List</h2>
       <div className="delete-inventory-table-container">
-        <table className="delete-inventory-table" style={{ backgroundColor: props.mode === 'dark' ? '#333' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}>
+        <table className="delete-inventory-table" style={{ backgroundColor: mode === 'dark' ? '#333' : '#fff', color: mode === 'dark' ? '#e0e0e0' : '#000' }}>
           <thead>
             <tr className="delete-inventory-table-header">
               <th>Select</th>

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Navbar from './Navbar';
+import { AppContext } from './AppContext'; // Corrected import
 import MerchentOptions from './MerchentOptions';
 import '../styles/recordExpenses.css';
 
@@ -8,10 +9,18 @@ export default function RecordExpenses(props) {
   const [amount, setAmount] = useState('');
   const [reason, setReason] = useState('');
   const [paymentMode, setPaymentMode] = useState('CASH');
-  const [status, setStatus] = useState(''); // Track the previous transaction status
+  const [status, setStatus] = useState('');
+
+  const { mode, toggleMode, userid, isAuthenticated } = useContext(AppContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate that amount is a number
+    if (isNaN(amount)) {
+      setStatus('Please enter a valid number for the amount.');
+      return;
+    }
 
     try {
       const response = await fetch('http://localhost:5000/revenueMate/v1/merchant/recordExpense', {
@@ -20,10 +29,10 @@ export default function RecordExpenses(props) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          id: props.id,
+          id:userid,
           vendorname: vendorName,
-          amount: amount,
-          reason: reason,
+          amount,
+          reason,
           payment: paymentMode,
         }),
       });
@@ -32,24 +41,22 @@ export default function RecordExpenses(props) {
         throw new Error('Network response was not ok');
       }
 
-      // Clear the input fields after successful submission
       setVendorName('');
       setAmount('');
       setReason('');
-      setPaymentMode('CASH'); // Reset to default
-
-      setStatus('Transaction successfully submitted!'); // Update status after submission
+      setPaymentMode('CASH');
+      setStatus('Transaction successfully submitted!');
     } catch (error) {
       console.error('Error recording expense:', error);
-      setStatus('Transaction failed. Please try again.'); // Update status on error
+      setStatus('Transaction failed. Please try again.');
     }
   };
 
   return (
-    <div className='main' style={{ backgroundColor: props.mode === 'dark' ? '#000000' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}>
-      <Navbar  heading1="Home" heading2="Profile" heading3="Logout" mode={props.mode} toggleMode={props.toggleMode} isAuthenticated={props.isAuthenticated} />
-      <MerchentOptions mode={props.mode} />
-      <div className="expense-form-container" style={{ backgroundColor: props.mode === 'dark' ? '#000000' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}>
+    <div className="main" style={{ backgroundColor: mode === 'dark' ? '#000000' : '#fff', color: mode === 'dark' ? '#e0e0e0' : '#000' }}>
+      <Navbar />
+      <MerchentOptions  />
+      <div className="expense-form-container" style={{ backgroundColor: mode === 'dark' ? '#000000' : '#fff', color: mode === 'dark' ? '#e0e0e0' : '#000' }}>
         <form onSubmit={handleSubmit} className="expense-form">
           <input
             name="name"
@@ -60,7 +67,7 @@ export default function RecordExpenses(props) {
             value={vendorName}
             onChange={(e) => setVendorName(e.target.value)}
             className="input-field"
-            style={{ backgroundColor: props.mode === 'dark' ? '#333' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}
+            style={{ backgroundColor: mode === 'dark' ? '#333' : '#fff', color: mode === 'dark' ? '#e0e0e0' : '#000' }}
           />
           <input
             name="amount"
@@ -71,7 +78,7 @@ export default function RecordExpenses(props) {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             className="input-field"
-            style={{ backgroundColor: props.mode === 'dark' ? '#333' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}
+            style={{ backgroundColor: mode === 'dark' ? '#333' : '#fff', color: mode === 'dark' ? '#e0e0e0' : '#000' }}
           />
           <input
             name="reason"
@@ -82,9 +89,9 @@ export default function RecordExpenses(props) {
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             className="input-field"
-            style={{ backgroundColor: props.mode === 'dark' ? '#333' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}
+            style={{ backgroundColor: mode === 'dark' ? '#333' : '#fff', color: mode === 'dark' ? '#e0e0e0' : '#000' }}
           />
-          <label htmlFor="nature" className="label-text" style={{ backgroundColor: props.mode === 'dark' ? '#000000' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}>
+          <label htmlFor="nature" className="label-text" style={{ color: mode === 'dark' ? '#e0e0e0' : '#000' }}>
             Mode of Payment:
           </label>
           <select
@@ -93,7 +100,7 @@ export default function RecordExpenses(props) {
             value={paymentMode}
             onChange={(e) => setPaymentMode(e.target.value)}
             className="select-field"
-            style={{ backgroundColor: props.mode === 'dark' ? '#333' : '#fff', color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}
+            style={{ backgroundColor: mode === 'dark' ? '#333' : '#fff', color: mode === 'dark' ? '#e0e0e0' : '#000' }}
           >
             <option value="CASH">Cash</option>
             <option value="CARD">Card</option>
@@ -103,7 +110,7 @@ export default function RecordExpenses(props) {
             Transact
           </button>
         </form>
-        <p className="transaction-status" style={{ color: props.mode === 'dark' ? '#e0e0e0' : '#000' }}>
+        <p className="transaction-status" style={{ color: mode === 'dark' ? '#e0e0e0' : '#000' }}>
           Previous Transaction Status: {status}
         </p>
       </div>
